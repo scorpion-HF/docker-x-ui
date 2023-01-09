@@ -7,6 +7,7 @@ services:
     volumes:
       - ./db:/etc/x-ui/ #./x-ui.db
       - ./v2-ui.db:/etc/v2-ui/v2-ui.db #migrate v2_ui
+      - ./letsencrypt/:/etc/letsencrypt/
     restart: always
     network_mode: host
     
