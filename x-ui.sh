@@ -7,7 +7,7 @@ plain='\033[0m'
 
 confirm() {
     if [[ $# > 1 ]]; then
-        echo && read -p "$1 [默认$2]: " temp
+        echo && read -p "$1 [default$2]: " temp
         if [[ x"${temp}" == x"" ]]; then
             temp=$2
         fi
@@ -22,7 +22,7 @@ confirm() {
 }
 
 confirm_restart() {
-    confirm "是否重启面板，重启面板也会重启 x2ray" "y"
+    confirm "Whether to restart the panel, restarting the panel will also restart x2ray" "y"
     if [[ $? == 0 ]]; then
         restart
     else
@@ -31,12 +31,12 @@ confirm_restart() {
 }
 
 before_show_menu() {
-    echo && echo -n -e "${yellow}按回车返回主菜单: ${plain}" && read temp
+    echo && echo -n -e "${yellow}Press enter to return to the main menu: ${plain}" && read temp
     show_menu
 }
 
 reset_user() {
-    confirm "确定要将用户名和密码重置为 admin 吗" "n"
+    confirm "Are you sure you want to reset username and password to admin" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
@@ -44,12 +44,12 @@ reset_user() {
         return 0
     fi
     /usr/local/x-ui/x-ui setting -username admin -password admin
-    echo -e "用户名和密码已重置为 ${green}admin${plain}，现在请重启面板"
+    echo -e "Username and password have been reset to ${green}admin${plain}，Please restart the panel now"
     confirm_restart
 }
 
 reset_config() {
-    confirm "确定要重置所有面板设置吗，账号数据不会丢失，用户名和密码不会改变" "n"
+    confirm "Are you sure you want to reset all panel settings, account data will not be lost, username and password will not change" "n"
     if [[ $? != 0 ]]; then
         if [[ $# == 0 ]]; then
             show_menu
@@ -57,18 +57,18 @@ reset_config() {
         return 0
     fi
     /usr/local/x-ui/x-ui setting -reset
-    echo -e "所有面板设置已重置为默认值，现在请重启面板，并使用默认的 ${green}54321${plain} 端口访问面板"
+    echo -e "All panel settings have been reset to default, please restart the panel now and use the default ${green}54321${plain} Port Access Panel"
     confirm_restart
 }
 
 set_port() {
-    echo && echo -n -e "输入端口号[1-65535]: " && read port
+    echo && echo -n -e "Enter port number[1-65535]: " && read port
     if [[ -z "${port}" ]]; then
-        echo -e "${yellow}已取消${plain}"
+        echo -e "${yellow}Cancelled${plain}"
         before_show_menu
     else
         /usr/local/x-ui/x-ui setting -port ${port}
-        echo -e "设置端口完毕，现在请重启面板，并使用新设置的端口 ${green}${port}${plain} 访问面板"
+        echo -e "After setting the port, please restart the panel now and use the newly set port ${green}${port}${plain} access panel"
         confirm_restart
     fi
 }
@@ -84,15 +84,15 @@ migrate_v2_ui() {
 
 show_menu() {
     echo -e "
-  ${green}x-ui 面板管理脚本${plain}
+  ${green}x-ui Panel Management Script${plain}
 --- https://blog.sprov.xyz/x-ui ---
-  ${green}0.${plain} 退出脚本
+  ${green}0.${plain} exit script
 ————————————————
-  ${green}1.${plain} 重置用户名密码
-  ${green}2.${plain} 重置面板设置
-  ${green}3.${plain} 设置面板端口
-  ${green}4.${plain} 迁移 v2-ui 账号数据至 x-ui"
-    echo && read -p "请输入选择 [0-4]: " num
+  ${green}1.${plain} Reset username and password
+  ${green}2.${plain} Reset panel settings
+  ${green}3.${plain} Set panel port
+  ${green}4.${plain} Migrate v2-ui account data to x-ui"
+    echo && read -p "please enter selection [0-4]: " num
 
     case "${num}" in
         0) exit 0
@@ -105,7 +105,7 @@ show_menu() {
         ;;
         4) migrate_v2_ui
         ;;
-        *) echo -e "${red}请输入正确的数字 [0-4]${plain}"
+        *) echo -e "${red}Please enter the correct number [0-4]${plain}"
         ;;
     esac
 }
